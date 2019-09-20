@@ -4,10 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Nate and Andrea's Quizz App</title>
+    <meta name="description" type="A quiz app about the show It\'s always sunny in Philadelphia.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>It's always sunnny in Philadelphia quiz</title>
     <link rel="stylesheet" href="index.css">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Gaegu" rel="stylesheet"> ADDING FONT -->
 </head>
 <body>
+    <main role="main" class="container">
+        <header role="banner" class="header">
+            <section>
+                <a href="index.html">
+                    <img class="theGang" src="https://images.complex.com/complex/images/c_limit,dpr_auto,q_90,w_720/fl_lossy,pg_1/jv6d2fdu0t6fn16vqpmu/always-sunny-in-philadelphia" alt="The characters of the show all together"/>
+                </a>
+            </section>
+            <section>
+                <ul>
+                    <li class="sizeMe">Question:
+                        <span class="questionNumber">0</span>/10</li>
+                    <li class="sizeMe">Score:
+                    <span class="score">0</span>
+                    </li>
+                </ul> 
+            </section>
+        </header>
+            <section role="region" class="theBar">
+                <section class="startQuiz box">
+                    <h1>How well do you know The Gang?</h1>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c6/IASIPTC.svg" alt="It's always sunny in philadelphia banner" class="images">
+                    <button type="button" class="startButton button">Start</button>
+                </section>
+                <section class="questionBox box altBox"></section>
+                <section class="response box altBox"></section>
+                <section class="final box altBox"></section>
+            </section>
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"> integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
     <script type="text/javascript" src="index.js"></script>
 </body>
 </html>
