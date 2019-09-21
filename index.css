@@ -16,8 +16,22 @@
     text-align: center;
   }
 
+  ul {
+    text-align: center; 
+  }
+
+  .sizeMe {
+    display: inline-block; 
+    margin-left: auto;
+    margin-right: auto;
+
+  }
+
   .theGang {
     max-width: 25em;
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
   }
 
   .header li {
@@ -72,17 +86,100 @@
   height: 5em;
   width: 10em;
   cursor: pointer;
-  /*font-family: 'Gaegu', cursive;*/
   text-transform: uppercase;
   border: 0.1em #000302 solid;
   background-color: black;
   color: #ffffff;
-  display: center;
-  /*text-align: center;
-  vertical-align: middle;*/
+  display: block;
+  /*font-family: 'Gaegu', cursive;*/
+}
+
+#sizeImage {
+  margin-top: 1em;
+  margin-left: auto; 
+  margin-right: auto; 
+  display: block;
 }
 
 .button {
 text-align: center;
 margin: auto;
+}
+
+@media only screen and (min-width: 320px){
+
+  main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .theGang {
+    width: 200px;
+  }
+
+  .images{
+    width: 400px;
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+
+
+  .button{
+    margin-top: 0.5em;
+    font-size: 1em;
+    width: 8em;
+    height: 2.5em;
+  }
+
+  h1{
+    font-size: 1em; 
+  }
+
+}
+
+@media only screen and (min-width: 550px){
+  main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .theGang{
+    width: 29.5em;
+    height: 31.5em;
+    padding-top: 2.6em;
+    padding-bottom: 2.6em;
+  }
+
+  .button{
+    margin-top: 1em;
+    font-size: 1em;
+    width: 10em;
+    height: 2.5em;
+  }
+
+  .theGang {
+    width: 500px;
+    height: 350px;
+  }
+
+  
+
+  .images{
+    width: 500px;
+  }
+
+  h1{
+    font-size: 1em;
+  }
+
+  .sizeMe{
+    font-size: 0.9em;
+  }
+}
+
+@media only screen and (min-width: 800px){
+  
 }

@@ -1,4 +1,5 @@
 //Question array
+'use strict';
 const STORE = {
 content:[
     {
@@ -18,7 +19,7 @@ content:[
         'Aluminum Monster',
         'Peaches'
         ],
-        correctAnswer: 'Aluminum Monster'
+        correctAnswer: 'Aluminum Monster',
         questionNumber: 2, 
     },
     {
@@ -29,7 +30,7 @@ content:[
             'Frank', 
             'Dennis'
         ],
-        correctAnswer: 'Dennis'
+        correctAnswer: 'Dennis',
         questionNumber: 3,
     },
     {
@@ -40,11 +41,9 @@ content:[
             'Ihop', 
             'Red Robin'
         ],
-        correctAnswer: 'TGI Fridays'
+        correctAnswer: 'TGI Fridays',
         questionNumber: 4,
 
-
-        ],
     },
     {
         questions: 'Which character said: \'I\’m not fat, I’m cultivating mass\'',
@@ -54,7 +53,7 @@ content:[
             'Dee', 
             'Mac'
         ],
-        correctAnswer: 'Mac'
+        correctAnswer: 'Mac',
         questionNumber: 5,
     },
     {
@@ -65,7 +64,7 @@ content:[
             'Frankie Fast Hands', 
             'Butterfly Hands'
         ],
-        correctAnswer: 'Frankie Fast Hands'
+        correctAnswer: 'Frankie Fast Hands',
         questionNumber: 6,
     },
     {
@@ -76,7 +75,7 @@ content:[
             'Dee', 
             'Mac',
         ],
-        correctAnswer: 'Frank'
+        correctAnswer: 'Frank',
         questionNumber: 7,
     },
     {
@@ -87,7 +86,7 @@ content:[
             'Helmets', 
             'Egg Shells'
         ],
-        correctAnswer: 'People’s knees'
+        correctAnswer: 'People’s knees',
         questionNumber: 8,
 
         
@@ -100,7 +99,7 @@ content:[
             'Benjamin', 
             'Frank'
         ],
-        correctAnswer: 'Ronald'
+        correctAnswer: 'Ronald',
         questionNumber: 9,
 
     },
@@ -112,12 +111,12 @@ content:[
             'Honey and Vinegar', 
             'Lemon and Lime'
         ],
-        correctAnswer:  'Honey and Vinegar'
+        correctAnswer:  'Honey and Vinegar',
         questionNumber: 10,
     }
     
 ],
-{ score: 0,}
+ score: 0
 };
 
 //Generate start screen
@@ -144,7 +143,9 @@ function startScreen(){
     <section class="startQuiz box">
         <h1>How well do you know The Gang?</h1>
         <img src="https://upload.wikimedia.org/wikipedia/commons/c/c6/IASIPTC.svg" alt="It's always sunny in philadelphia banner" class="images">
-        <button type="button" id= "start-button" class="startButton button">Start</button>
+        <div id="sizeImage">
+            <button type="button" id= "start-button" class="startButton button">Start</button>
+        </div> 
     </section>
     <section class="questionBox box altBox"></section>
     <section class="response box altBox"></section>
@@ -154,21 +155,41 @@ function startScreen(){
 )
 
 $('#start-button').on('click', () => {
-    startQuiz();
+    createHtml();
 });
 }
-//Starts the quiz
-function startQuiz(){
-    let begin=$('#container');
-    let question= generateQuestion();
-    let answer=
-    let score= 
-     
+
+//creating HTML for form
+function createHtml(questionDatabase){
+    let formStruc = $(`<form>
+        <fieldset> 
+            <legend class ="questionText">${STORE[questionDatabase].question}</legend>
+        <fieldset>
+    </form>`)
+
+    let fieldSelector = $(formStruc).find('fieldset');
+
+    STORE[questionDatabase].answers.forEach(function(ansValue, ansIndex){
+       fieldSelector += $(`<label class="sizeMe" for="${ansIndex}">
+            <input class="radio" type="radio" 
+            id="${ansIndex}" value="${ansValue}"
+            name="answer" required>
+            <span>${ansValue}</span>
+        </label>
+        `);
+    });
+    fieldSelector += $(`<button type="submit" class="submitButton button">
+    Submit</button>`);
+    return formStruc;
 }
 
 //Generate each question
 function generateQuestion(){
+    
+}
 
+//Generate Answer 
+function generateAnswer(){
 }
 
 //Updating the current score
@@ -192,10 +213,6 @@ function submitAnswer(){
 
 }
 
-//creating HTML for form
-function createHtml(){
-
-}
 
 //correct answer
 function correctAnswer(){
@@ -225,5 +242,8 @@ function restartQuiz(){
 //run functions
 function generateQuiz(){
     //list all functions here
+    startScreen();
 }
-$(makeQuestion);
+
+$(generateQuiz)
+//$(makeQuestion);
