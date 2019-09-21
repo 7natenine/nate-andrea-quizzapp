@@ -65,7 +65,7 @@
   background-color: #ffd700;
 }*/
 
-.button {
+.startButton {
   margin-left: auto;
   margin-right: auto;
   margin-top: 1em;
@@ -75,8 +75,14 @@
   /*font-family: 'Gaegu', cursive;*/
   text-transform: uppercase;
   border: 0.1em #000302 solid;
-  background-color: #000302;
+  background-color: black;
   color: #ffffff;
-  display: flex;
-  text-align: center;
-  vertical-align: middle;
+  display: center;
+  /*text-align: center;
+  vertical-align: middle;*/
+}
+
+.button {
+text-align: center;
+margin: auto;
+}
