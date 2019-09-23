@@ -145,60 +145,57 @@ function startScreen(){
 </section>
 </main>`
 )
+startQuiz();
 }
 
-// function currentIndex(){ 
-//     let 
-//     return 
-// }
+
 
 
 //creating HTML for form
 function createHtml(questionIndex){
 
-    console.log(questionIndex);
+    //console.log(questionIndex);
 
     let formStruc = $(`<form>
         <fieldset> 
-            <legend class ="questionText">${STORE[questionIndex].questions}</legend>
+            <legend class ="questionText">${STORE.content[questionIndex].questions}</legend>
         <fieldset>
     </form>`)
 
     let fieldSelector = $(formStruc).find('fieldset');
-    STORE[questionIndex].answers.forEach(function(ansValue, ansIndex){
-       fieldSelector += $(`<label class="sizeMe" for="${ansIndex}">
+
+    STORE.content[questionIndex].answers.forEach(function(ansValue, ansIndex){
+        $(`<label class="sizeMe" for="${ansIndex}">
             <input class="radio" type="radio" 
             id="${ansIndex}" value="${ansValue}"
             name="answer" required>
             <span>${ansValue}</span>
         </label>
-        `);
+        `).appendTo(fieldSelector);
     });
-    fieldSelector += $(`<button type="submit" class="submitButton button">
-    Submit</button>`);
+    $(`<button type="submit" class="submitButton button">
+    Submit</button>`).appendTo(fieldSelector);
     return formStruc;
 }
 
 
 //Generate each question
 function generateQuestion(){
-    if(STORE.questionNumber < STORE.length ){
-        return createHtml(STORE.questionNumber);
+    if(STORE.questionNumber < STORE.content.length ){
+        return STORE.questionNumber;
     }
     else { 
         finalScore();
-        $('.questionNumber').text(10);
     }
     
 }
 
-//Generate Answer 
-function generateAnswer(){
-}
 
 //Updating the current score
 function updateScore(){
-
+    STORE.score++;
+    $('.score').text(STORE.score);
+    console.log('hi');
 }
 
 //Updating question number
@@ -218,17 +215,33 @@ function resetStats(){
 
 function startQuiz() {
     $('.startQuiz').on('click', '.startButton',
-    funnction(event) {
-        $('.questionNumber').text(1);
-        $('.questionBox').prepend(generateQuestion());
+    function(event) {
+        if (STORE.questionNumber >= 0) {
+            $('questionBox').show
+            $('.questionNumber').text(1)
+            $('.questionBox').prepend(generateQuestion());
+            //generateQuestion() //+= $('.questionBox');
+            console.log("red");
+        }
+        if(STORE.questionNumber > STORE.content.length){
+            finalScore();
+            $('.questionNumber').text(10);
+        }
+        // $('.startQuiz').hide;
+        // $('.questionNumber').text(1);
+        // $('questionBox').show;
+        // $('.questionBox').prepend(generateQuestion());
+        // //console.log('hello');
     });
+    
 }
 
 //Submit answer
 function submitAnswer(){
     $('.theBar').on('submit',function (event){
         event.preventDefault();
-        $('.response').style.display = 'block';
+        //$('.response').style.display = 'block';
+        $('.response').show;
         let selected = $('input:checked');
         let answer = selected.val();
         let correct = STORE[questionNumber].correctAnswer;
@@ -251,6 +264,7 @@ function correctAnswer(){
           <button type="button" class="nextButton button">Next</button>`
       );
       updateScore();
+      console.log('hi');
 
 }
 
@@ -270,16 +284,18 @@ function wrongAnswer(){
 
 //next question
 function nextQuestion(){
-    $('.thebar').on('click', '.nextButton'),
+    $('.thebar').on('click', '.nextButton',
     function (event) {
+        $('.questionBox').show;
         updateQuestionNumber();
-        $('.questionBBox form').replaceWith(generateQuestion());
+        $('.questionBox form').replaceWith(generateQuestion());
     });
 }
 
 //Gives final score
 function finalScore(){
-$('.final').style.display = 'block';
+$('.final').css('display', 'block');
+//$('.final').show;
 
   const great = [
     'Nice job Champ!',
@@ -301,10 +317,11 @@ $('.final').style.display = 'block';
     'The gang is mad',
     'Please watch a few episodes right now.'
   ];
+  let array= [];
 
-  if (score >= 8) {
+  if (STORE.score >= 8) {
     array = great;
-  } else if (score < 8 && score >= 5) {
+  } else if (STORE.score < 8 && STORE.score >= 5) {
     array = good;
   } else {
     array = bad;
@@ -312,7 +329,7 @@ $('.final').style.display = 'block';
   return $('.final').html(
     `<h3>${array[0]}</h3>
       <img src="${array[1]}" alt="${array[2]}" class="images">
-        <h3>Your score is ${score} / 10</h3>
+        <h3>Your score is ${STORE.score} / 10</h3>
         <p class="sizeMe">${array[3]}</p>
         <button type="submit" class="restartButton button">Restart</button>`
   );
@@ -320,14 +337,25 @@ $('.final').style.display = 'block';
 
 //Restart quiz
 function restartQuiz(){
-
+$('.thebar').on('click', '.restartButton', function (event){
+event.preventDefault();
+resetStats();
+//$('.startQuiz').style.display = 'block';
+$('.startQuiz').show;
+});
 }
 
 //run functions
 function generateQuiz(){
     //list all functions here
     startScreen();
+    startQuiz();
 }
+//     generateQuestion();
+//     submitAnswer();
+//     nextQuestion();
+//     restartQuiz();
+// }
 
-$(generateQuiz)
-//$(makeQuestion);
+$(generateQuiz);
+
