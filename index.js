@@ -1,29 +1,28 @@
 //Question array
 'use strict';
 const STORE = {
-content:[
+
+content: [
     {
-        question: 'Which character said: \'I don’t know how many years I got left on this planet, I’m going to get real weird with it\'',
+        questions: 'Which character said: \'I don’t know how many years I got left on this planet, I’m going to get real weird with it\'',
         answers: ['Frank Reynolds', 
         'Mac',
         'The Waitress',
         'Dennis'
         ],
         correctAnswer: 'Frank Reynolds',
-        questionNumber: 1,
     },
     {
-        question: 'What was Dee\'s nickname in high school?',
+        questions: 'What was Dee\'s nickname in high school?',
         answers: ['Dumb Dee Dee',
         'Toothpick',
         'Aluminum Monster',
         'Peaches'
         ],
         correctAnswer: 'Aluminum Monster',
-        questionNumber: 2, 
     },
     {
-        question: 'The thunder of my vengeance will echo through these corridors like the gusts of a thousand winds!',
+        questions: 'The thunder of my vengeance will echo through these corridors like the gusts of a thousand winds!',
         answers: [
             'Artemis', 
             'Charlie’s mom', 
@@ -31,10 +30,9 @@ content:[
             'Dennis'
         ],
         correctAnswer: 'Dennis',
-        questionNumber: 3,
     },
     {
-        question: 'What restaurant does Mac repeatedly try to use his Dave and Buster\'s power card at?',
+        questions: 'What restaurant does Mac repeatedly try to use his Dave and Buster\'s power card at?',
         answers: [
             'TGI Fridays', 
             'Denny\’s', 
@@ -42,7 +40,6 @@ content:[
             'Red Robin'
         ],
         correctAnswer: 'TGI Fridays',
-        questionNumber: 4,
 
     },
     {
@@ -54,7 +51,6 @@ content:[
             'Mac'
         ],
         correctAnswer: 'Mac',
-        questionNumber: 5,
     },
     {
         questions: 'What does Frank claim his nickname was back when he was a boxer?',
@@ -65,7 +61,6 @@ content:[
             'Butterfly Hands'
         ],
         correctAnswer: 'Frankie Fast Hands',
-        questionNumber: 6,
     },
     {
         questions: 'Which character does not appear in season one?',
@@ -76,7 +71,6 @@ content:[
             'Mac',
         ],
         correctAnswer: 'Frank',
-        questionNumber: 7,
     },
     {
         questions: 'Which of these does Charlie consider one of his dislikes?',
@@ -87,7 +81,6 @@ content:[
             'Egg Shells'
         ],
         correctAnswer: 'People’s knees',
-        questionNumber: 8,
 
         
     },
@@ -100,7 +93,6 @@ content:[
             'Frank'
         ],
         correctAnswer: 'Ronald',
-        questionNumber: 9,
 
     },
     {
@@ -112,11 +104,11 @@ content:[
             'Lemon and Lime'
         ],
         correctAnswer:  'Honey and Vinegar',
-        questionNumber: 10,
-    }
+    }],
+questionNumber: 0,
+numQuestions: 10, 
+score: 0
     
-],
- score: 0
 };
 
 //Generate start screen
@@ -153,23 +145,27 @@ function startScreen(){
 </section>
 </main>`
 )
-
-$('#start-button').on('click', () => {
-    createHtml();
-});
 }
 
+// function currentIndex(){ 
+//     let 
+//     return 
+// }
+
+
 //creating HTML for form
-function createHtml(questionDatabase){
+function createHtml(questionIndex){
+
+    console.log(questionIndex);
+
     let formStruc = $(`<form>
         <fieldset> 
-            <legend class ="questionText">${STORE[questionDatabase].question}</legend>
+            <legend class ="questionText">${STORE[questionIndex].questions}</legend>
         <fieldset>
     </form>`)
 
     let fieldSelector = $(formStruc).find('fieldset');
-
-    STORE[questionDatabase].answers.forEach(function(ansValue, ansIndex){
+    STORE[questionIndex].answers.forEach(function(ansValue, ansIndex){
        fieldSelector += $(`<label class="sizeMe" for="${ansIndex}">
             <input class="radio" type="radio" 
             id="${ansIndex}" value="${ansValue}"
@@ -183,8 +179,16 @@ function createHtml(questionDatabase){
     return formStruc;
 }
 
+
 //Generate each question
 function generateQuestion(){
+    if(STORE.questionNumber < STORE.length ){
+        return createHtml(STORE.questionNumber);
+    }
+    else { 
+        finalScore();
+        $('.questionNumber').text(10);
+    }
     
 }
 
@@ -199,39 +203,119 @@ function updateScore(){
 
 //Updating question number
 function updateQuestionNumber(){
-
+    STORE.questionNumber++;
+    $('.questionNumber').text
+    (STORE.questionNumber +1);
 }
 
 //Reseting quizz
 function resetStats(){
-
+    STORE.score = 0;
+    STORE.questionNumber = 0;
+    $('.score').text(0);
+    $('.questionNumber').text(0);
 }
 
+function startQuiz() {
+    $('.startQuiz').on('click', '.startButton',
+    funnction(event) {
+        $('.questionNumber').text(1);
+        $('.questionBox').prepend(generateQuestion());
+    });
+}
 
 //Submit answer
 function submitAnswer(){
+    $('.theBar').on('submit',function (event){
+        event.preventDefault();
+        $('.response').style.display = 'block';
+        let selected = $('input:checked');
+        let answer = selected.val();
+        let correct = STORE[questionNumber].correctAnswer;
 
+        if (answer === correct) {
+            correctAnswer();
+          } else {
+            wrongAnswer();
+          }
+    });    
 }
 
 
 //correct answer
 function correctAnswer(){
+    $('.response').html(
+        `<h3>Correct!!</h3>
+        <img src="https://preview.redd.it/ttsrz526zi811.jpg?auto=webp&s=8e82aac0eec65d8ab81dcc724552c6b8db39e7ff" alt="Happy Charlie" class="images" width="200px">
+          <p class="sizeMe">You're a true fan!</p>
+          <button type="button" class="nextButton button">Next</button>`
+      );
+      updateScore();
 
 }
 
 //wrong answer
 function wrongAnswer(){
 
+    $('.response').html(
+        `<h3>Incorrect!</h3>
+        <img src="https://pbs.twimg.com/media/C1yMJ0AUAAA-PZO.jpg:large" alt="Frank dissapointed" class="images" width="200px">
+        <p class="sizeMe">The correct response is:</p>
+        <p class="sizeMe">${STORE[questionNumber].correctAnswer}</p>
+        <button type="button" class="nextButton button">Next</button>`
+      );
+
+
 }
 
 //next question
 function nextQuestion(){
-
+    $('.thebar').on('click', '.nextButton'),
+    function (event) {
+        updateQuestionNumber();
+        $('.questionBBox form').replaceWith(generateQuestion());
+    });
 }
 
 //Gives final score
 function finalScore(){
+$('.final').style.display = 'block';
 
+  const great = [
+    'Nice job Champ!',
+    'http://cdn.collider.com/wp-content/uploads/2011/06/its-always-sunny-in-philadelphia-image-2.jpg',
+    'Dennis dancing',
+    'How many hours have you spent watching this show?!'
+  ];
+
+  const good = [
+    'Good, but you can do better!',
+    'https://images.static-bluray.com/reviews/8734_5.jpg',
+    'The gang raising their hands',
+    'You should watch the show more'
+  ];
+
+  const bad = [
+    'Have you ever seen the show?',
+    'https://pmcdeadline2.files.wordpress.com/2016/04/its-always-sunny-in-philadelphia.jpg?w=630&h=383&crop=1',
+    'The gang is mad',
+    'Please watch a few episodes right now.'
+  ];
+
+  if (score >= 8) {
+    array = great;
+  } else if (score < 8 && score >= 5) {
+    array = good;
+  } else {
+    array = bad;
+  }
+  return $('.final').html(
+    `<h3>${array[0]}</h3>
+      <img src="${array[1]}" alt="${array[2]}" class="images">
+        <h3>Your score is ${score} / 10</h3>
+        <p class="sizeMe">${array[3]}</p>
+        <button type="submit" class="restartButton button">Restart</button>`
+  );
 }
 
 //Restart quiz
