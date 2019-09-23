@@ -344,11 +344,7 @@ function generateQuiz(){
     startScreen();
     startQuiz();
 }
-//     generateQuestion();
-//     submitAnswer();
-//     nextQuestion();
-//     restartQuiz();
-// }
+
 
 $(generateQuiz);
 
