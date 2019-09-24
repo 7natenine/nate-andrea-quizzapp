@@ -130,7 +130,6 @@ function startScreen(){
         </li>
     </ul>
 </section>
-</header>
 <section role="region" class="theBar">
     <section class="startQuiz box">
         <h1>How well do you know The Gang?</h1>
