@@ -26,7 +26,7 @@ const STORE = {
       question: 'What restaurant does Mac repeatedly try to use his Dave and Buster\'s power card at?',
       answers: ['TGI Fridays',
         'Denny\’s',
-        'Ihop',
+        'IHOP',
         'Red Robin'
       ],
       correctAnswer: 'TGI Fridays',
@@ -84,48 +84,7 @@ const STORE = {
   correctAnswers: 0,
 };
 
-function updateQuestionNumber(){
-  let result = STORE.questionNumber++;
-  return `${result} / 7`;
-}
-
-function updateScore(){
-  let result = ++STORE.score;
-  return `${result} / 7`; 
-}
-
-function generateQuestion() {
-  let questionNumber = STORE.questionNumber;
-  if (questionNumber <= STORE.questions.length+1) {
-    return STORE.questions[questionNumber - 2].question;
-  }
-  else
-    finalScore();
-}
-
-function generateCorrectAnswer() {
-  let curr = STORE.questionNumber-2;
-  return STORE.questions[curr].correctAnswer;
-}
-
-function renderPage() {
-  if (STORE.questionNumber === 0) {
-    startPage();
-    return;
-  }
-
-  else if (STORE.questionNumber > STORE.numQuestions) {
-    finalScore();
-    return;
-  }
-
-  //generateCurrentScore();
-  else {
-    generateAllQuestions();
-  }
-
-}
-
+//Renders the start page
 function startHtml() {
   let start = $('.start-container');
   start.html(`
@@ -150,6 +109,39 @@ function startPage() {
   });
 }
 
+//HTML for generating the questions rendering them, submitting them,
+//then checking if the answers are correct or not
+function questionsHtml() {
+  let questionNumber = STORE.questionNumber-1;
+  let options = STORE.questions[questionNumber-1].answers.map((ansValue, ansIndex) => {
+    return `<li class='ansVal'>
+                   <input class="radio" type="radio" id="${ansIndex}" value="${ansValue}" name="answer" required>
+                   <label class="sizeMe" for="${ansIndex}">${ansValue}</label>
+               </li>`
+  });
+  options = options.join('');
+  let questionsHtml2 =
+    `<form class="test">
+    <fieldset class='questionBorder'>
+       <h3>${generateQuestion()}</h3>
+       <ul> ${options}</ul>
+    <fieldset>
+    <button type="submit" class="submitButton button">Submit</button>
+    </form>`;
+  return questionsHtml2;
+}
+
+//Returns question until all are rendered, otherwise it will render the final score
+function generateQuestion() {
+  let questionNumber = STORE.questionNumber;
+  if (questionNumber <= STORE.questions.length+1) {
+    return STORE.questions[questionNumber - 2].question;
+  }
+  else
+    finalScore();
+}
+
+//Allows user to submit answer after each question is rendered
 function generateAllQuestions() {
   $('.questionNumber').html(updateQuestionNumber());
   let questions = questionsHtml();
@@ -168,6 +160,8 @@ function generateAllQuestions() {
   });
 }
 
+//Evaluates submitted answer to check if it is correct/incorrect
+//Returns correct answer if user is incorrect
 function submitAnswer(ans) {
   let result;
   if (ans === generateCorrectAnswer(STORE.questionNumber)) {
@@ -187,35 +181,9 @@ function submitAnswer(ans) {
 
 }
 
-function generateCurrentScore() {
-  let scores = getScoreHtml()
-  $('.scores').html(scores);
-}
-
-function getScoreHtml() {
-  return `<h2>Your current score is ${STORE.correctAnswer}/${STORE.numQuestions}</h2>`
-}
-//HTML
-
-
-function questionsHtml() {
-  let questionNumber = STORE.questionNumber-1;
-  let options = STORE.questions[questionNumber-1].answers.map((ansValue, ansIndex) => {
-    return `<li class='ansVal'>
-                   <input class="radio" type="radio" id="${ansIndex}" value="${ansValue}" name="answer" required>
-                   <label class="sizeMe" for="${ansIndex}">${ansValue}</label>
-               </li>`
-  });
-  options = options.join('');
-  let questionsHtml2 =
-    `<form class="test">
-    <fieldset>
-       <h3>${generateQuestion()}</h3>
-       <ul> ${options}</ul>
-    <fieldset>
-    <button type="submit" class="submitButton button">Submit</button>
-    </form>`;
-  return questionsHtml2;
+function generateCorrectAnswer() {
+  let curr = STORE.questionNumber-2;
+  return STORE.questions[curr].correctAnswer;
 }
 
 function correctAnswerHtml() {
@@ -238,9 +206,31 @@ function wrongAnswerHtml() {
 
 }
 
+//Generates HTML for score
+//Updates question number and score after each submission
+//Returns final score
+function generateCurrentScore() {
+  let scores = getScoreHtml()
+  $('.scores').html(scores);
+}
+
+function updateQuestionNumber(){
+  let result = STORE.questionNumber++;
+  return `${result} / 7`;
+}
+
+function getScoreHtml() {
+  return `<h2>Your current score is ${STORE.correctAnswer}/${STORE.numQuestions}</h2>`
+}
+
+function updateScore(){
+  let result = ++STORE.score;
+  return `${result} / 7`; 
+}
+
+//After final score is rendered, it will call the start page
 function finalScore() {
   $('.start-container').html(finalPage());
-  console.log("here")
   $('.restartButton').on('click', function (event) {
     event.preventDefault();
     STORE.score = 0;
@@ -252,11 +242,13 @@ function finalScore() {
 
 }
 
+//Renders final page with feedback for final score
+//Allows user to restart quiz
 function finalPage(){
 
 const great = [ 'Nice job Champ!', 'http://cdn.collider.com/wp-content/uploads/2011/06/its-always-sunny-in-philadelphia-image-2.jpg', 'Dennis dancing', 'How many hours have you spent watching this show?!' ];
-const good = [ 'Good, but you can do better!', 'https://images.static-bluray.com/reviews/8734_5.jpg', 'The gang raising their hands', 'You should watch the show more' ];
-const bad = [ 'Have you ever seen the show?', 'https://pmcdeadline2.files.wordpress.com/2016/04/its-always-sunny-in-philadelphia.jpg?w=630&h=383&crop=1', 'The gang is mad', 'Please watch a few episodes right now.' ]; 
+const good = [ 'Good, but you can do better!', 'https://images.static-bluray.com/reviews/8734_5.jpg', 'The gang raising their hands', 'Decent, but needs improvement' ];
+const bad = [ 'Have you ever seen the show?', 'https://pmcdeadline2.files.wordpress.com/2016/04/its-always-sunny-in-philadelphia.jpg?w=630&h=383&crop=1', 'The gang is mad', 'Please go watch a few episodes right now.' ]; 
 
 let array= [];
 
@@ -277,6 +269,26 @@ return `<h3>${array[0]}</h3>
   <button type="submit" class="restartButton button">Restart</button>`;
 }
 
+//Evaluates whether to return start page or final score
+function renderPage() {
+  if (STORE.questionNumber === 0) {
+    startPage();
+    return;
+  }
+
+  else if (STORE.questionNumber > STORE.numQuestions) {
+    finalScore();
+    return;
+  }
+
+  //generateCurrentScore();
+  else {
+    generateAllQuestions();
+  }
+
+}
+
+//Calls render page
 function startQuiz() {
   renderPage();
 }

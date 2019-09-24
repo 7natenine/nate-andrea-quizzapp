@@ -2,14 +2,15 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    border-radius: 1%;
+    border-radius: 5%;
   }
   
   body {
     /*font-family: 'Gaegu', cursive;*/
     text-transform: uppercase;
-    color: #371d0d;
+    color: #000000;
     background-color: #ffd700;
+    overflow: hidden;
   }
   
   .header {
@@ -28,11 +29,15 @@
   }
 
   .theGang {
-    max-width: 25em;
+    max-width: 32em;
     display: block; 
     margin-left: auto; 
     margin-right: auto; 
   }
+
+.statBox{
+  margin-top: -15px;
+  margin-bottom: 60px;}
 
   .header li {
     display: inline-block;
@@ -49,11 +54,10 @@
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 3em;
-  
   }
 
   .images {
-    height: 35em;
+    height: 20em;
     width: 62em;
     display: flex;
     flex-direction: column;
@@ -66,44 +70,48 @@
     align-items: center;
   }
 
- /* .startQuiz,
-.box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  text-align: center;
-  margin: auto;
-  padding: 1em;
-  border: 0.1em #371d0d solid;
-  background-color: #ffd700;
-}*/
+  h3{
+    text-align: center;
+  }
 
-.startButton {
+.button {
   margin-left: auto;
   margin-right: auto;
   margin-top: 1em;
-  height: 5em;
+  height: 3em;
   width: 10em;
   cursor: pointer;
   text-transform: uppercase;
-  border: 0.1em #000302 solid;
+  border: 0.1em white solid;
   background-color: black;
-  color: #ffffff;
-  display: block;
-  /*font-family: 'Gaegu', cursive;*/
-}
-
-#sizeImage {
-  margin-top: 1em;
-  margin-left: auto; 
-  margin-right: auto; 
+  color: white;
   display: block;
 }
 
-.button {
-text-align: center;
-margin: auto;
+.start-container {
+  color:white;
+  font-family: Libre Baskerville, cursive;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 600px;
+  height: 550px;
+}
+
+.test{
+  height:500px;
+}
+li {
+  list-style: none;
+  padding: 10px;
+}
+
+.questionBorder{
+  border: solid black;
+  text-align: center;
+}
+
+.container{
+  background-color: #000000;
 }
 
 @media only screen and (min-width: 320px){
