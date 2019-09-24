@@ -77,7 +77,7 @@ const STORE= {
  
    }
    ],
-  
+
    questionNumber: 0,
    numQuestions: 10,
    score: 0,
@@ -86,24 +86,26 @@ const STORE= {
  
  
  
-function generateQuestion(question=STORE.questionNumber){
+function generateQuestion(questionNumber=STORE.questionNumber){
     if (questionNumber < STORE.questions.length) {
-        return questionsHtml(questionNumber); 
+        return STORE.questions[questionNumber-1].question; 
     } 
     else
         finalScore();
 }
  
 function questionNumber(){
- 
+
 }
  
 function generateAnswers(){
- 
+
 }
  
 function generateCorrectAnswer(){
- 
+    let curr = STORE.questionNumber;
+    console.log(STORE.questions[curr].answers);
+    return STORE.questions[curr].answers;
 }
  
 function renderPage(){
@@ -112,19 +114,16 @@ function renderPage(){
         return;
     }
 
-    if(STORE.questionNumber > STORE.numQuestions){
+    else if(STORE.questionNumber > STORE.numQuestions){
         finalScore();
         return;
     }
 
-    else if{
-        generateCurrentScore();
-    }
-
-    else if{
+        //generateCurrentScore();
+    else{
     generateAllQuestions();
     }
- 
+    
 }
  
 function startPage(){
@@ -139,13 +138,43 @@ function startPage(){
  
 function generateAllQuestions(){
     let questions = questionsHtml();
-    $('.questions').html(questions);
-
+    $('.startQuiz').html(questions);
     
+    console.log("here");
+    $('test').submit(function(event){
+        event.preventDefault();
+        let ans = $( "input[type=radio][name=answer]:checked" )
+        if (ans.length > 0) {
+            let ansr = $answer.val();
+
+            submitAnswer(ans);
+        }
+    });
 }
  
-function submitAnswer(){
- 
+function submitAnswer(ans){
+    let result;
+    if (ans === getCorrectAnswer(STORE.questionNumber)) {
+        console.log('correct');
+        // QUIZ.respondedList.push([STORE.questionNumber, 'Correct!']);
+        // QUIZ.correctAnswers += 1
+        result = generateCorrectHtml();
+
+    } else {
+        console.log('wrong');
+        // QUIZ.respondedList.push([QUIZ.currentQuestion, 'Wrong!', answer]);
+        // QUIZ.incorrectAnswers += 1
+        result = generateIncorrectHtml(answer);
+
+    }
+    generateCurrentScore();
+    $('.test').html(result) 
+    $('.js-next-button').on('click', function(event){
+        STORE.numQuestions += 1
+        renderPage();
+    });
+
+    
 }
  
 function generateCurrentScore(){
@@ -169,25 +198,22 @@ function startHtml(){
            </div>
        </section>
    </section>`)
-   //console.log('hello');
 }
  
 function questionsHtml(questionNumber=STORE.questionNumber){
-    console.log("here");
-   let options = generateAllQuestions().map.on((ansValue, ansIndex) => {
-       return `<li class='ansVal>
+   let options = STORE.questions[questionNumber-1].answers.map((ansValue, ansIndex) => {
+       return  `<li class='ansVal'>
                    <input class="radio" type="radio" id="${ansIndex +1}" value="${ansValue}" name="answer" required>
-                   <label class="sizeMe" for="${ansIndex}"></label>
+                   <label class="sizeMe" for="${ansIndex}">${ansValue}</label>
                </li>`
    });
-   options = options.toString();
- 
+   options = options.join('');
    let questionsHtml2 =
    `<h2 class='question-number'>Question ${questionNumber} / ${STORE.questions.length}</h2>
-    <form>
+    <form class="test">
     <fieldset>
        <h3>${generateQuestion()}</h3>
-       <ul> $(options)</ul>
+       <ul> ${options}</ul>
     <fieldset>
     <button type="submit" class="submitButton button">Submit</button>
     </form>`;
@@ -195,6 +221,7 @@ function questionsHtml(questionNumber=STORE.questionNumber){
 }
  
 function correctAnswerHtml(){
+    console.log("here frank");
    return `<h3>Correct!!</h3>
        <img src="https://preview.redd.it/ttsrz526zi811.jpg?auto=webp&s=8e82aac0eec65d8ab81dcc724552c6b8db39e7ff" alt="Happy Charlie" class="images" width="200px">
          <p class="sizeMe">You're a true fan!</p>
@@ -210,8 +237,14 @@ function wrongAnswerHtml(questionNumber=STORE.questionNumber){
  
 }
  
-function finalScoreHtml(){
- 
+function finalScore(){
+
+ let finalScoreHtml = `<p>Your score: ${STORE.score} out of 7</p> 
+ <button type='button' class='restart button'>Restart</button>`; 
+ STORE.score = 0; 
+ STORE.questionNumber=0; 
+ startPage();
+
 }
  
 function startQuiz(){
