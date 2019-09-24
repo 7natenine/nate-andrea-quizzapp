@@ -144,7 +144,6 @@ function startScreen(){
 </section>
 </main>`
 )
-startQuiz();
 }
 
 
@@ -152,9 +151,7 @@ startQuiz();
 
 //creating HTML for form
 function createHtml(questionIndex){
-
-    //console.log(questionIndex);
-
+    
     let formStruc = $(`<form>
         <fieldset> 
             <legend class ="questionText">${STORE.content[questionIndex].questions}</legend>
@@ -168,7 +165,7 @@ function createHtml(questionIndex){
             <input class="radio" type="radio" 
             id="${ansIndex}" value="${ansValue}"
             name="answer" required>
-            <span>${ansValue}</span>
+            <span>${ansValue}</span> 
         </label>
         `).appendTo(fieldSelector);
     });
@@ -179,13 +176,8 @@ function createHtml(questionIndex){
 
 
 //Generate each question
-function generateQuestion(){
-    if(STORE.questionNumber < STORE.content.length ){
-        return STORE.questionNumber;
-    }
-    else { 
-        finalScore();
-    }
+function returnQuestionNumber(){
+    return STORE.questionNumber;
     
 }
 
@@ -208,23 +200,24 @@ function updateQuestionNumber(){
 function resetStats(){
     STORE.score = 0;
     STORE.questionNumber = 0;
-    $('.score').text(0);
-    $('.questionNumber').text(0);
+    $('.score').text('0');
+    $('.questionNumber').text('0');
 }
 
 function startQuiz() {
     $('.startQuiz').on('click', '.startButton',
     function(event) {
+
         if (STORE.questionNumber >= 0) {
             $('questionBox').show
-            $('.questionNumber').text(1)
-            $('.questionBox').prepend(generateQuestion());
+            $('.questionNumber').text('1')
+            $('.questionBox').prepend(createHtml(returnQuestionNumber()));
             //generateQuestion() //+= $('.questionBox');
             console.log("red");
         }
         if(STORE.questionNumber > STORE.content.length){
             finalScore();
-            $('.questionNumber').text(10);
+            $('.questionNumber').text('10');
         }
         // $('.startQuiz').hide;
         // $('.questionNumber').text(1);
@@ -350,11 +343,7 @@ function generateQuiz(){
     startScreen();
     startQuiz();
 }
-//     generateQuestion();
-//     submitAnswer();
-//     nextQuestion();
-//     restartQuiz();
-// }
+
 
 $(generateQuiz);
 
