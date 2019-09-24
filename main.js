@@ -69,7 +69,7 @@ const STORE = {
       question: 'What names do Dennis and Mac give themselves when they\'re posing as realtors?',
       answers: [
         'Sugar and Spice',
-        'Jekyll and Hide',
+        'Jekyll and Hyde',
         'Honey and Vinegar',
         'Lemon and Lime'
       ],
@@ -79,32 +79,33 @@ const STORE = {
   ],
 
   questionNumber: 0,
-  numQuestions: 10,
+  numQuestions: 7,
   score: 0,
   correctAnswers: 0,
 };
 
+function updateQuestionNumber(){
+  let result = STORE.questionNumber++;
+  return `${result} / 7`;
+}
+
+function updateScore(){
+  let result = ++STORE.score;
+  return `${result} / 7`; 
+}
+
 function generateQuestion() {
   let questionNumber = STORE.questionNumber;
-  if (questionNumber < STORE.questions.length) {
-    return STORE.questions[questionNumber - 1].question;
+  if (questionNumber <= STORE.questions.length+1) {
+    return STORE.questions[questionNumber - 2].question;
   }
   else
     finalScore();
 }
 
-function questionNumber() {
-
-}
-
-function generateAnswers() {
-
-}
-
 function generateCorrectAnswer() {
-  let curr = STORE.questionNumber;
-  console.log(STORE.questions[curr].answers);
-  return STORE.questions[curr].answers;
+  let curr = STORE.questionNumber-2;
+  return STORE.questions[curr].correctAnswer;
 }
 
 function renderPage() {
@@ -144,16 +145,17 @@ function startPage() {
 
   $('.startButton').on('click', function (event) {
     event.preventDefault();
-    STORE.questionNumber++;
+    updateQuestionNumber();
     renderPage();
   });
 }
 
 function generateAllQuestions() {
+  $('.questionNumber').html(updateQuestionNumber());
   let questions = questionsHtml();
   $('.startQuiz').html(questions);
 
-  console.log("here");
+
   $('.test').submit(function (event) {
     event.preventDefault();
     let ans = $('input[type=radio][name=answer]:checked');
@@ -161,7 +163,7 @@ function generateAllQuestions() {
     if (ans.length > 0) {
       let ansr = ans.val();
 
-      submitAnswer(ans);
+      submitAnswer(ansr);
     }
   });
 }
@@ -169,23 +171,17 @@ function generateAllQuestions() {
 function submitAnswer(ans) {
   let result;
   if (ans === generateCorrectAnswer(STORE.questionNumber)) {
-    console.log('correct');
-    // QUIZ.respondedList.push([STORE.questionNumber, 'Correct!']);
-    // QUIZ.correctAnswers += 1
     result = correctAnswerHtml();
 
+
   } else {
-    console.log('wrong');
-    // QUIZ.respondedList.push([QUIZ.currentQuestion, 'Wrong!', answer]);
-    // QUIZ.incorrectAnswers += 1
     result = wrongAnswerHtml(ans);
 
   }
   generateCurrentScore();
   $('.test').html(result)
-  $('.js-next-button').on('click', function (event) {
-    STORE.questionNumber += 1;
-    renderPage();
+  $('.nextButton').on('click', function (event) {
+      renderPage();
   });
 
 
@@ -203,17 +199,16 @@ function getScoreHtml() {
 
 
 function questionsHtml() {
-  let questionNumber = STORE.questionNumber;
-  let options = STORE.questions[questionNumber - 1].answers.map((ansValue, ansIndex) => {
+  let questionNumber = STORE.questionNumber-1;
+  let options = STORE.questions[questionNumber-1].answers.map((ansValue, ansIndex) => {
     return `<li class='ansVal'>
-                   <input class="radio" type="radio" id="${ansIndex + 1}" value="${ansValue}" name="answer" required>
+                   <input class="radio" type="radio" id="${ansIndex}" value="${ansValue}" name="answer" required>
                    <label class="sizeMe" for="${ansIndex}">${ansValue}</label>
                </li>`
   });
   options = options.join('');
   let questionsHtml2 =
-    `<h2 class='question-number'>Question ${questionNumber} / ${STORE.questions.length}</h2>
-    <form class="test">
+    `<form class="test">
     <fieldset>
        <h3>${generateQuestion()}</h3>
        <ul> ${options}</ul>
@@ -224,7 +219,8 @@ function questionsHtml() {
 }
 
 function correctAnswerHtml() {
-  console.log("here frank");
+  $('.score').html(updateScore());
+  
   return `<h3>Correct!!</h3>
        <img src="https://preview.redd.it/ttsrz526zi811.jpg?auto=webp&s=8e82aac0eec65d8ab81dcc724552c6b8db39e7ff" alt="Happy Charlie" class="images" width="200px">
          <p class="sizeMe">You're a true fan!</p>
@@ -233,22 +229,52 @@ function correctAnswerHtml() {
 
 function wrongAnswerHtml() {
   let questionNumber = STORE.questionNumber;
-  `<h3>Incorrect!</h3>
+
+  return `<h3>Incorrect!</h3>
        <img src="https://pbs.twimg.com/media/C1yMJ0AUAAA-PZO.jpg:large" alt="Frank dissapointed" class="images" width="200px">
        <p class="sizeMe">The correct response is:</p>
-       <p class="sizeMe">${STORE.questions[questionNumber].correctAnswer}</p>
+       <p class="sizeMe">${STORE.questions[questionNumber-2].correctAnswer}</p>
        <button type="button" class="nextButton button">Next</button>`;
 
 }
 
 function finalScore() {
+  $('.start-container').html(finalPage());
+  console.log("here")
+  $('.restartButton').on('click', function (event) {
+    event.preventDefault();
+    STORE.score = 0;
+    $('.score').html('0 / 7');
+    STORE.questionNumber = 0;
+    $('.questionNumber').html('0 / 7');
+    startPage();
+  });
 
-  let finalScoreHtml = `<p>Your score: ${STORE.score} out of 7</p> 
- <button type='button' class='restart button'>Restart</button>`;
-  STORE.score = 0;
-  STORE.questionNumber = 0;
-  startPage();
+}
 
+function finalPage(){
+
+const great = [ 'Nice job Champ!', 'http://cdn.collider.com/wp-content/uploads/2011/06/its-always-sunny-in-philadelphia-image-2.jpg', 'Dennis dancing', 'How many hours have you spent watching this show?!' ];
+const good = [ 'Good, but you can do better!', 'https://images.static-bluray.com/reviews/8734_5.jpg', 'The gang raising their hands', 'You should watch the show more' ];
+const bad = [ 'Have you ever seen the show?', 'https://pmcdeadline2.files.wordpress.com/2016/04/its-always-sunny-in-philadelphia.jpg?w=630&h=383&crop=1', 'The gang is mad', 'Please watch a few episodes right now.' ]; 
+
+let array= [];
+
+  if (STORE.score >= 6){ 
+    array = great; 
+  } 
+  else if (STORE.score < 6 && STORE.score >= 4) { 
+    array = good; 
+  } 
+  else { 
+    array = bad; 
+    }
+
+return `<h3>${array[0]}</h3> 
+  <img src="${array[1]}" alt="${array[2]}" class="images"> 
+  <h3>Your score is ${STORE.score} / 7</h3> 
+  <p class="sizeMe">${array[3]}</p> 
+  <button type="submit" class="restartButton button">Restart</button>`;
 }
 
 function startQuiz() {
