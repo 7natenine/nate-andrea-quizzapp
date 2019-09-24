@@ -91,7 +91,9 @@ function startHtml() {
    <section role="region" class="theBar">
        <section class="startQuiz box">
            <h1>How well do you know The Gang?</h1>
+           <div class="sizeImage">
            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c6/IASIPTC.svg" alt="It's always sunny in philadelphia banner" class="images">
+           </div> 
            <div id="sizeImage">
                <button type="button" id= "start-button" class="startButton button">Start</button>
            </div>
@@ -114,8 +116,9 @@ function startPage() {
 function questionsHtml() {
   let questionNumber = STORE.questionNumber-1;
   let options = STORE.questions[questionNumber-1].answers.map((ansValue, ansIndex) => {
+    console.log(ansIndex+1);
     return `<li class='ansVal'>
-                   <input class="radio" type="radio" id="${ansIndex}" value="${ansValue}" name="answer" required>
+                   <input class="radio" type="radio" tabindex="${ansIndex+1}" id="${ansIndex}" value="${ansValue}" name="answer" required>
                    <label class="sizeMe" for="${ansIndex}">${ansValue}</label>
                </li>`
   });
@@ -125,7 +128,7 @@ function questionsHtml() {
     <fieldset class='questionBorder'>
        <h3>${generateQuestion()}</h3>
        <ul> ${options}</ul>
-    <fieldset>
+    <fieldset class='questionBorder'>
     <button type="submit" class="submitButton button">Submit</button>
     </form>`;
   return questionsHtml2;
@@ -191,7 +194,7 @@ function correctAnswerHtml() {
   
   return `<h3>Correct!!</h3>
        <img src="https://preview.redd.it/ttsrz526zi811.jpg?auto=webp&s=8e82aac0eec65d8ab81dcc724552c6b8db39e7ff" alt="Happy Charlie" class="images" width="200px">
-         <p class="sizeMe">You're a true fan!</p>
+         <div class="ans"><p class="sizeMe">You're a true fan!</p></div>
          <button type="button" class="nextButton button">Next</button>`
 }
 
@@ -200,8 +203,10 @@ function wrongAnswerHtml() {
 
   return `<h3>Incorrect!</h3>
        <img src="https://pbs.twimg.com/media/C1yMJ0AUAAA-PZO.jpg:large" alt="Frank dissapointed" class="images" width="200px">
+       <div class="ans">
        <p class="sizeMe">The correct response is:</p>
        <p class="sizeMe">${STORE.questions[questionNumber-2].correctAnswer}</p>
+       </div>
        <button type="button" class="nextButton button">Next</button>`;
 
 }
@@ -248,7 +253,7 @@ function finalPage(){
 
 const great = [ 'Nice job Champ!', 'http://cdn.collider.com/wp-content/uploads/2011/06/its-always-sunny-in-philadelphia-image-2.jpg', 'Dennis dancing', 'How many hours have you spent watching this show?!' ];
 const good = [ 'Good, but you can do better!', 'https://images.static-bluray.com/reviews/8734_5.jpg', 'The gang raising their hands', 'Decent, but needs improvement' ];
-const bad = [ 'Have you ever seen the show?', 'https://pmcdeadline2.files.wordpress.com/2016/04/its-always-sunny-in-philadelphia.jpg?w=630&h=383&crop=1', 'The gang is mad', 'Please go watch a few episodes right now.' ]; 
+const bad = [ 'Have you even seen the show?', 'https://pmcdeadline2.files.wordpress.com/2016/04/its-always-sunny-in-philadelphia.jpg?w=630&h=383&crop=1', 'The gang is mad', 'Please go watch a few episodes right now.' ]; 
 
 let array= [];
 
@@ -264,8 +269,10 @@ let array= [];
 
 return `<h3>${array[0]}</h3> 
   <img src="${array[1]}" alt="${array[2]}" class="images"> 
-  <h3>Your score is ${STORE.score} / 7</h3> 
+  <div class="cen">
+  <h4>Your score is ${STORE.score} / 7</h4> 
   <p class="sizeMe">${array[3]}</p> 
+  </div>
   <button type="submit" class="restartButton button">Restart</button>`;
 }
 
